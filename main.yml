@@ -1,0 +1,108 @@
+---
+- hosts: localhost
+  connection: local
+  gather_facts: false
+
+  vars:
+    mas_installed_app_ids:
+      - 1569813296  #1Password for Safari
+      - 1168254295  #AmorphousDiskMark
+      - 937984704   #Amphetamine
+      - 402670023   #Keyboard Pilot
+      - 540348655   #Monosnap
+
+    homebrew_cask_accept_external_apps: true
+
+    homebrew_taps:
+      # sshpass
+      - { name: esolitos/ipa, url: 'https://github.com/esolitos/homebrew-ipa' }
+      # vagrant/terraform
+      - { name: hashicorp/tap, url: 'https://github.com/hashicorp/homebrew-tap' }
+
+    homebrew_installed_packages:
+      - ansible-lint
+      - colima
+      - docker
+      - docker-compose
+      - git
+      - git-crypt
+      - git-lfs
+      - grep
+      - iperf3
+      - jq
+      - sshpass
+      - terraform
+      - wget
+      - yq
+      - yamllint
+      - ssh-copy-id
+      - pv
+      - zsh
+      # - oh-my-zsh
+      # - zsh auto-complete
+
+
+    homebrew_cask_apps:
+      - firefox
+      - google-chrome
+      - vlc
+      - hashicorp-vagrant
+      - keka
+      - kekaexternalhelper
+      - macfuse
+      - session-manager-plugin
+      - telegram-desktop
+      - utm
+      - vagrant
+      - rambox
+      - visual-studio-code
+      - visual-studio-code@insiders
+      #- forklift
+      - maccy
+      - deepl
+      - rectangle
+      - iterm2
+      - appcleaner
+      - multitouch
+      - blueharvest
+      - finicky
+      - tunnelblick
+      # - epic pen
+      # - ice
+      - macupdater
+      - audio-hijack
+      - loopback
+      - vnc-viewer
+      - 1password
+      - bitwarden
+      - deltawalker
+      - obsidian
+      - brave-browser
+      # - zscaler
+
+    dockitems_remove:
+      - Launchpad
+      - TV
+      - Podcasts
+      - 'App Store'
+
+    dockitems_persist:
+      - name: Messages
+        path: "/Applications/Messages.app/"
+      - name: Safari
+        path: "/Applications/Safari.app/"
+        pos: 2
+      - name: Sublime Text
+        path: "/Applications/Sublime Text.app/"
+        pos: 3
+
+  roles:
+    - role: geerlingguy.mac.homebrew
+      tags:
+        - homebrew
+    - role: geerlingguy.mac.mas
+      tags:
+        - mas
+    - role: geerlingguy.mac.dock
+      tags:
+        - dock
