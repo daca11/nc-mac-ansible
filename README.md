@@ -16,4 +16,6 @@ This playbook uses roles from Jeff Geerling's ([Mac Collection for Ansible](http
 
 4. Make sure you're logged in AppStore
 
-5. Run the playbook and enter your system's password `ansible-playbook -K main.yml`
+5. Install required roles `ansible-galaxy install -r requirements.yml`
+
+6. Run the playbook and enter your system's password `ansible-playbook -K main.yml`

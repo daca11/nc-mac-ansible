@@ -119,6 +119,9 @@
         path: "/Applications/iTerm.app/"
 
   roles:
+    - role: elliotweiser.osx-command-line-tools
+      tags:
+        - command-line-tools
     - role: geerlingguy.mac.homebrew
       tags:
         - homebrew
