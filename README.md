@@ -14,4 +14,6 @@ This playbook uses roles from Jeff Geerling's ([Mac Collection for Ansible](http
 
 3. Install ansible from homebrew `brew install ansible`
 
-4. Run the playbook
+4. Make sure you're logged in AppStore
+
+5. Run the playbook and enter your system's password `ansible-playbook -K main.yml`
