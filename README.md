@@ -8,14 +8,16 @@ This playbook uses roles from Jeff Geerling's ([Mac Collection for Ansible](http
 
 ## Usage
 
-1. Change the `vars` section of the `main.yml` playbook with apps you need from homebrew, App Store & in dock.
+1. Install Homebrew from Self-Service app
 
-2. Install Homebrew from Self-Service app
+2. Install ansible from homebrew `brew install ansible`
 
-3. Install ansible from homebrew `brew install ansible`
+3. Make sure you're logged in AppStore
 
-4. Make sure you're logged in AppStore
+4. Install required roles `ansible-galaxy install -r requirements.yml`
 
-5. Install required roles `ansible-galaxy install -r requirements.yml`
+5. Change the `vars` section of the `main.yml` playbook with apps you need from homebrew, App Store & in dock.
 
-6. Run the playbook and enter your system's password `ansible-playbook -K main.yml`
+6. Put your mac's password in `homebrew_sudo_password` (required to install casks without asking for the password for each item). Remember to not commit your password in plain text if you're forking this repo!! (at least encrypt it with Ansible Vault).
+
+7. Run the playbook `ansible-playbook main.yml`
