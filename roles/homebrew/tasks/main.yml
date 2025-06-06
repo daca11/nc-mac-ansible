@@ -12,9 +12,9 @@
   homebrew_cask:
     name: "{{ item.name | default(item) }}"
     state: present
-    install_options: "{{ item.install_options | default('appdir=' + homebrew_cask_appdir) }}"
+    install_options: "{{ item.install_options | default(omit) }}"
     accept_external_apps: "{{ homebrew_cask_accept_external_apps }}"
-    sudo_password: "{{ ansible_become_password | default(omit) }}"
+    sudo_password: "{{ homebrew_sudo_password }}"
   loop: "{{ homebrew_cask_apps }}"
 
 # Brew

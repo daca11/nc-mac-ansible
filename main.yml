@@ -2,9 +2,10 @@
 - name: Install brew apps and AppStore apps on macOS
   hosts: localhost
   connection: local
-  become: true
 
   vars:
+    homebrew_sudo_password: 'your_password_here'
+
     mas_installed_app_ids:
       - 1569813296  # 1Password for Safari
       - 1168254295  # AmorphousDiskMark
