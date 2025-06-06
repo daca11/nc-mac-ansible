@@ -122,7 +122,7 @@
     - role: elliotweiser.osx-command-line-tools
       tags:
         - command-line-tools
-    - role: geerlingguy.mac.homebrew
+    - role: homebrew # geerlingguy.mac.homebrew
       tags:
         - homebrew
     - role: geerlingguy.mac.mas
