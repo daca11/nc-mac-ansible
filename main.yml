@@ -1,16 +1,16 @@
 ---
-- hosts: localhost
+- name: Install brew apps and AppStore apps on macOS
+  hosts: localhost
   connection: local
-  gather_facts: false
   become: true
 
   vars:
     mas_installed_app_ids:
-      - 1569813296  #1Password for Safari
-      - 1168254295  #AmorphousDiskMark
-      - 937984704   #Amphetamine
-      - 402670023   #Keyboard Pilot
-      - 540348655   #Monosnap
+      - 1569813296  # 1Password for Safari
+      - 1168254295  # AmorphousDiskMark
+      - 937984704   # Amphetamine
+      - 402670023   # Keyboard Pilot
+      - 540348655   # Monosnap
 
     homebrew_cask_accept_external_apps: true
 
@@ -58,7 +58,7 @@
       - rambox
       - visual-studio-code
       - visual-studio-code@insiders
-      #- forklift
+      # - forklift
       - maccy
       - deepl
       - rectangle
