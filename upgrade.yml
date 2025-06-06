@@ -1,0 +1,21 @@
+---
+- name: Upgrade brew apps and AppStore apps on macOS
+  hosts: localhost
+  connection: local
+
+  tasks:
+    - name: Upgrade brew casks
+      community.general.homebrew_cask:
+        sudo_password: "{{ homebrew_sudo_password }}"
+        upgrade_all: true
+      tags: cask_upgrade
+
+    - name: Upgrade brew packages
+      community.general.homebrew:
+        update_homebrew: true
+        upgrade_all: true
+      tags: brew_upgrade
+
+    - name: Upgrade AppStore apps
+      command: 'mas upgrade'
+      tags: mas_upgrade

@@ -4,8 +4,6 @@
   connection: local
 
   vars:
-    homebrew_sudo_password: 'your_password_here'
-
     mas_installed_apps:
       - 1569813296  # 1Password for Safari
       - 1168254295  # AmorphousDiskMark
@@ -122,7 +120,7 @@
   roles:
     - role: elliotweiser.osx-command-line-tools
       tags:
-        - command-line-tools
+        - cli-tools
     - role: homebrew # geerlingguy.mac.homebrew
       tags:
         - homebrew
