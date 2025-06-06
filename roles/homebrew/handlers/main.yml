@@ -1,0 +1,4 @@
+---
+- name: Clear homebrew cache
+  ansible.builtin.debug:
+    msg: "Fake clearing homebrew cache required to install dockutil"
