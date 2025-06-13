@@ -8,7 +8,7 @@
   loop: "{{ homebrew_taps }}"
 
 # Cask
-- name: Install configured cask applications.
+- name: Install configured cask applications (with retry).
   homebrew_cask:
     name: "{{ item.name | default(item) }}"
     state: present
@@ -16,11 +16,19 @@
     accept_external_apps: "{{ homebrew_cask_accept_external_apps }}"
     sudo_password: "{{ homebrew_sudo_password }}"
   loop: "{{ homebrew_cask_apps }}"
+  retries: 2
+  delay: 2
+  register: cask_result
+  until: cask_result is succeeded
 
 # Brew
-- name: Ensure configured homebrew packages are installed.
+- name: Ensure configured homebrew packages are installed (with retry).
   homebrew:
     name: "{{ item.name | default(item) }}"
     install_options: "{{ item.install_options | default(omit) }}"
     state: "{{ item.state | default('present') }}"
   loop: "{{ homebrew_installed_packages }}"
+  retries: 2
+  delay: 2
+  register: brew_result
+  until: brew_result is succeeded
