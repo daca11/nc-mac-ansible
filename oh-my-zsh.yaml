@@ -1,0 +1,73 @@
+---
+- name: Install and configure oh-my-zsh with plugins and theme
+  hosts: localhost
+  connection: local
+
+  vars:
+    zsh_custom_path: "~/.oh-my-zsh/custom"
+
+  tasks:
+    - name: Check if oh-my-zsh is already installed
+      ansible.builtin.stat:
+        path: "~/.oh-my-zsh"
+      register: oh_my_zsh_stat
+
+    - name: Install oh-my-zsh
+      ansible.builtin.shell: sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
+      when: not oh_my_zsh_stat.stat.exists
+
+    - name: Check if powerlevel10k theme is installed
+      ansible.builtin.stat:
+        path: "{{ zsh_custom_path }}/themes/powerlevel10k"
+      register: powerlevel10k_stat
+
+    - name: Clone powerlevel10k theme
+      ansible.builtin.git:
+        repo: https://github.com/romkatv/powerlevel10k.git
+        dest: "{{ zsh_custom_path }}/themes/powerlevel10k"
+        depth: 1
+      when: not powerlevel10k_stat.stat.exists
+
+    - name: Check if zsh-syntax-highlighting plugin is installed
+      ansible.builtin.stat:
+        path: "{{ zsh_custom_path }}/plugins/zsh-syntax-highlighting"
+      register: syntax_highlighting_stat
+
+    - name: Clone zsh-syntax-highlighting plugin
+      ansible.builtin.git:
+        repo: https://github.com/zsh-users/zsh-syntax-highlighting.git
+        dest: "{{ zsh_custom_path }}/plugins/zsh-syntax-highlighting"
+      when: not syntax_highlighting_stat.stat.exists
+
+    - name: Check if zsh-autosuggestions plugin is installed
+      ansible.builtin.stat:
+        path: "{{ zsh_custom_path }}/plugins/zsh-autosuggestions"
+      register: autosuggestions_stat
+
+    - name: Clone zsh-autosuggestions plugin
+      ansible.builtin.git:
+        repo: https://github.com/zsh-users/zsh-autosuggestions.git
+        dest: "{{ zsh_custom_path }}/plugins/zsh-autosuggestions"
+        update: false
+      when: not autosuggestions_stat.stat.exists
+
+    # - name: Ensure .zshrc exists
+    #   ansible.builtin.stat:
+    #     path: "{{ user_home }}/.zshrc"
+    #   register: zshrc_stat
+
+    # - name: Update .zshrc with powerlevel10k theme
+    #   ansible.builtin.lineinfile:
+    #     path: "{{ user_home }}/.zshrc"
+    #     regexp: '^ZSH_THEME='
+    #     line: 'ZSH_THEME="powerlevel10k/powerlevel10k"'
+    #     backup: yes
+    #   when: zshrc_stat.stat.exists
+
+    # - name: Update .zshrc with plugins
+    #   ansible.builtin.lineinfile:
+    #     path: "{{ user_home }}/.zshrc"
+    #     regexp: '^plugins='
+    #     line: 'plugins=(git zsh-syntax-highlighting zsh-autosuggestions)'
+    #     backup: yes
+    #   when: zshrc_stat.stat.exists
