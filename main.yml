@@ -38,8 +38,7 @@
       - ssh-copy-id
       - pv
       - zsh
-      # - oh-my-zsh
-      # - zsh auto-complete
+      - font-jetbrains-mono-nerd-font
 
 
     homebrew_cask_apps:
@@ -64,7 +63,7 @@
       - iterm2
       - appcleaner
       - multitouch
-      - blueharvest
+      # - blueharvest # Installed via AppStore (old purchase)
       - finicky
       - tunnelblick
       # - epic pen
@@ -79,6 +78,7 @@
       - obsidian
       - brave-browser
       # - zscaler
+      - syncthing
 
     dockitems_remove:
       - Launchpad
@@ -114,7 +114,7 @@
         path: "/Applications/Visual Studio Code.app/"
       - name: Visual Studio Code Insiders
         path: "/Applications/Visual Studio Code - Insiders.app/"
-      - name: iTerm2
+      - name: iTerm
         path: "/Applications/iTerm.app/"
 
   roles:
