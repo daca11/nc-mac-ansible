@@ -3,6 +3,10 @@
   hosts: localhost
   connection: local
 
+  vars:
+    excluded_app_ids:
+      - "823766827" # OneDrive
+      - "908570259" # RMS_sharing
   tasks:
     - name: Upgrade brew casks
       community.general.homebrew_cask:
@@ -17,5 +21,49 @@
       tags: brew_upgrade
 
     - name: Upgrade AppStore apps
-      command: 'mas upgrade'
       tags: mas_upgrade
+      block:
+        - name: Get list of outdated apps
+          command: mas outdated
+          register: outdated_apps
+          changed_when: false
+          failed_when: false
+
+        - name: Parse outdated apps and filter excluded ones
+          set_fact:
+            apps_to_upgrade: >-
+              {{
+                outdated_apps.stdout_lines
+                | select('match', '^[0-9]+')
+                | map('regex_replace', '^([0-9]+).*', '\1')
+                | list
+                | difference(excluded_app_ids)
+              }}
+          when: outdated_apps.stdout_lines is defined and outdated_apps.stdout_lines | length > 0
+
+        - name: Display apps that will be upgraded
+          debug:
+            msg: "Apps to upgrade: {{ apps_to_upgrade | default([]) }}"
+
+        - name: Display excluded apps that have updates
+          debug:
+            msg: "Excluded apps with available updates: {{ excluded_apps_with_updates }}"
+          vars:
+            excluded_apps_with_updates: >-
+              {{
+                outdated_apps.stdout_lines
+                | select('match', '^[0-9]+')
+                | map('regex_replace', '^([0-9]+).*', '\1')
+                | list
+                | intersect(excluded_app_ids)
+              }}
+          when: 
+            - outdated_apps.stdout_lines is defined 
+            - outdated_apps.stdout_lines | length > 0
+            - excluded_apps_with_updates | length > 0
+
+        - name: Upgrade allowed apps
+          command: "mas upgrade {{ item }}"
+          loop: "{{ apps_to_upgrade | default([]) }}"
+          register: upgrade_results
+          when: apps_to_upgrade is defined and apps_to_upgrade | length > 0
