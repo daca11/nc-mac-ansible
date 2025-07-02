@@ -10,6 +10,7 @@
       - 937984704   # Amphetamine
       - 402670023   # Keyboard Pilot
       - 540348655   # Monosnap
+      - 1352778147  # Bitwarden
 
     homebrew_cask_accept_external_apps: true
 
@@ -73,12 +74,12 @@
       - loopback
       - vnc-viewer
       - 1password
-      - bitwarden
+      # - bitwarden # Installed via AppStore (browser integration support)
       - deltawalker
       - obsidian
       - brave-browser
       # - zscaler
-      - syncthing
+      - syncthing-app
 
     dockitems_remove:
       - Launchpad
