@@ -40,7 +40,9 @@
       - pv
       - zsh
       - font-jetbrains-mono-nerd-font
-
+      - openshift-cli
+      - kubernetes-cli
+      - terragrunt
 
     homebrew_cask_apps:
       - firefox
@@ -80,6 +82,10 @@
       - brave-browser
       # - zscaler
       - syncthing-app
+      - openvpn-connect
+      - microsoft-edge
+      - gcloud-cli
+      - cursor
 
     dockitems_remove:
       - Launchpad
@@ -109,8 +115,8 @@
         path: "/Applications/Telegram Desktop.app/"
       - name: Firefox
         path: "/Applications/Firefox.app/"
-      - name: Google Chrome
-        path: "/Applications/Google Chrome.app/"
+      - name: Microsoft Edge
+        path: "/Applications/Microsoft Edge.app/"
       - name: Visual Studio Code
         path: "/Applications/Visual Studio Code.app/"
       - name: Visual Studio Code Insiders
