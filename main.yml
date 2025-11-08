@@ -11,6 +11,7 @@
       - 402670023   # Keyboard Pilot
       - 540348655   # Monosnap
       - 1352778147  # Bitwarden
+      - 1553936137  # Azure VPN
 
     homebrew_cask_accept_external_apps: true
 
@@ -86,6 +87,7 @@
       - microsoft-edge
       - gcloud-cli
       - cursor
+      - mysqlworkbench
 
     dockitems_remove:
       - Launchpad

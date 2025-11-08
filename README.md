@@ -35,7 +35,9 @@ This playbook uses roles from Jeff Geerling's ([Mac Collection for Ansible](http
         - `brew list` for installed casks (GUI apps) & formulaes (CLI apps)
         - `mas list` for installed Mac App Store app ids
 
-6. Put your mac's password in `homebrew_sudo_password` variable of `group_vars/all.yml` (required to install casks without asking for the password for each item). Remember to not commit your password in plain text if you're forking this repo!! (at least encrypt it with Ansible Vault).
+6. Put your mac's password in `homebrew_sudo_password` variable of `group_vars/all.yml` (required to install casks without asking for the password for each item).
+   - Remember to not commit your password in plain text if you're forking this repo!! (at least encrypt it with Ansible Vault).
+   - Remember to **update your password** when you change it, or it will ask again for password
 
 ### Installing apps
 

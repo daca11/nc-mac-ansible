@@ -7,14 +7,63 @@
     excluded_app_ids:
       - "823766827" # OneDrive
       - "908570259" # RMS_sharing
+    excluded_cask_ids:
+      - "hashicorp-vagrant" # doesn't recognize sudo password when running uninstall.tool
+      - "vagrant"
   tasks:
     - name: Upgrade brew casks
-      community.general.homebrew_cask:
-        sudo_password: "{{ homebrew_sudo_password }}"
-        upgrade_all: true
       tags: cask_upgrade
+      block:
+        - name: Get list of outdated casks
+          command: brew outdated --cask
+          register: outdated_casks
+          changed_when: false
+          failed_when: false
 
-    - name: Upgrade brew packages
+        - name: Parse outdated casks and filter excluded ones
+          set_fact:
+            casks_to_upgrade: >-
+              {{
+                outdated_casks.stdout_lines
+                | map('trim')
+                | select('match', '^[a-zA-Z0-9]')
+                | map('regex_replace', '^([a-zA-Z0-9][a-zA-Z0-9-_]*[a-zA-Z0-9]).*', '\1')
+                | list
+                | difference(excluded_cask_ids)
+              }}
+          when: outdated_casks.stdout_lines is defined and outdated_casks.stdout_lines | length > 0
+
+        - name: Display casks that will be upgraded
+          debug:
+            msg: "Casks to upgrade: {{ casks_to_upgrade | default([]) }}"
+
+        - name: Display excluded casks that have updates
+          debug:
+            msg: "Excluded casks with available updates: {{ excluded_casks_with_updates }}"
+          vars:
+            excluded_casks_with_updates: >-
+              {{
+                outdated_casks.stdout_lines
+                | map('trim')
+                | select('match', '^[a-zA-Z0-9]')
+                | map('regex_replace', '^([a-zA-Z0-9][a-zA-Z0-9-_]*[a-zA-Z0-9]).*', '\1')
+                | list
+                | intersect(excluded_cask_ids)
+              }}
+          when: 
+            - outdated_casks.stdout_lines is defined 
+            - outdated_casks.stdout_lines | length > 0
+            - excluded_casks_with_updates | length > 0
+
+        - name: Upgrade allowed casks
+          community.general.homebrew_cask:
+            name: "{{ item }}"
+            state: upgraded
+            sudo_password: "{{ homebrew_sudo_password }}"
+          loop: "{{ casks_to_upgrade | default([]) }}"
+          when: casks_to_upgrade is defined and casks_to_upgrade | length > 0
+
+    - name: Upgrade brew packages # TODO: vagrant might try to upgrade here, asking for password -> try first manually if failing!
       community.general.homebrew:
         update_homebrew: true
         upgrade_all: true
