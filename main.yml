@@ -12,6 +12,7 @@
       - 540348655   # Monosnap
       - 1352778147  # Bitwarden
       - 1553936137  # Azure VPN
+      - 1451685025  # WireGuard
 
     homebrew_cask_accept_external_apps: true
 
@@ -69,13 +70,13 @@
       - multitouch
       # - blueharvest # Installed via AppStore (old purchase)
       - finicky
-      - tunnelblick
+      # - tunnelblick
       # - epic pen
       - jordanbaird-ice
       - macupdater
       - audio-hijack
       - loopback
-      - vnc-viewer
+      # - vnc-viewer
       - 1password
       # - bitwarden # Installed via AppStore (browser integration support)
       - deltawalker
@@ -88,6 +89,8 @@
       - gcloud-cli
       - cursor
       - mysqlworkbench
+      - antigravity
+      - rustdesk
 
     dockitems_remove:
       - Launchpad
