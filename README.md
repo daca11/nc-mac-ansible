@@ -17,6 +17,8 @@ This playbook uses roles from Jeff Geerling's ([Mac Collection for Ansible](http
 - `geerlingguy.mac.mas` ([documentation](https://github.com/geerlingguy/ansible-collection-mac/blob/master/roles/mas/README.md))
 - `geerlingguy.mac.dock` ([documentation](https://github.com/geerlingguy/ansible-collection-mac/blob/master/roles/dock/README.md))
 
+This playbook also inserts ([a script by @ncautotest](https://gist.github.com/ncautotest/2503eb99903926c44aa2a28967ee08dd)) to have a menu to unmount usbs. It is installed in your home directory and ready to use with `sudo -i ~/usbmount.sh`.
+
 ## Usage
 
 ### Prerequisites

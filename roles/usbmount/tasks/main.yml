@@ -1,0 +1,6 @@
+---
+- name: Copy usbmount.sh to home directory
+  ansible.builtin.copy:
+    src: usbmount.sh
+    dest: ~/usbmount.sh
+    mode: '0755'
