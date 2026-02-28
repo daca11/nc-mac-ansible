@@ -91,6 +91,8 @@
       - mysqlworkbench
       - antigravity
       - rustdesk
+      - grandperspective
+      - lm-studio
 
     dockitems_remove:
       - Launchpad
