@@ -7,9 +7,11 @@
     excluded_app_ids:
       - "823766827" # OneDrive
       - "908570259" # RMS_sharing
-    excluded_cask_ids:
+      - "540348655" # Monosnap
+    excluded_brew_ids:
       - "hashicorp-vagrant" # doesn't recognize sudo password when running uninstall.tool
       - "vagrant"
+      - "virtualbox"
   tasks:
     - name: Upgrade brew casks
       tags: cask_upgrade
@@ -29,7 +31,7 @@
                 | select('match', '^[a-zA-Z0-9]')
                 | map('regex_replace', '^([a-zA-Z0-9][a-zA-Z0-9-_]*[a-zA-Z0-9]).*', '\1')
                 | list
-                | difference(excluded_cask_ids)
+                | difference(excluded_brew_ids)
               }}
           when: outdated_casks.stdout_lines is defined and outdated_casks.stdout_lines | length > 0
 
@@ -48,7 +50,7 @@
                 | select('match', '^[a-zA-Z0-9]')
                 | map('regex_replace', '^([a-zA-Z0-9][a-zA-Z0-9-_]*[a-zA-Z0-9]).*', '\1')
                 | list
-                | intersect(excluded_cask_ids)
+                | intersect(excluded_brew_ids)
               }}
           when: 
             - outdated_casks.stdout_lines is defined 
@@ -63,11 +65,56 @@
           loop: "{{ casks_to_upgrade | default([]) }}"
           when: casks_to_upgrade is defined and casks_to_upgrade | length > 0
 
-    - name: Upgrade brew packages # TODO: vagrant might try to upgrade here, asking for password -> try first manually if failing!
-      community.general.homebrew:
-        update_homebrew: true
-        upgrade_all: true
+    - name: Upgrade brew packages
       tags: brew_upgrade
+      block:
+      - name: Get list of outdated brew packages
+        command: brew outdated --formula
+        register: outdated_packages
+        changed_when: false
+        failed_when: false
+
+      - name: Parse outdated packages and filter excluded ones
+        set_fact:
+          packages_to_upgrade: >-
+            {{
+            outdated_packages.stdout_lines
+            | map('trim')
+            | select('match', '^[a-zA-Z0-9]')
+            | map('regex_replace', '^([a-zA-Z0-9][a-zA-Z0-9-_]*[a-zA-Z0-9]).*', '\1')
+            | list
+            | difference(excluded_brew_ids)
+            }}
+        when: outdated_packages.stdout_lines is defined and outdated_packages.stdout_lines | length > 0
+
+      - name: Display packages that will be upgraded
+        debug:
+          msg: "Packages to upgrade: {{ packages_to_upgrade | default([]) }}"
+
+      - name: Display excluded packages that have updates
+        debug:
+          msg: "Excluded packages with available updates: {{ excluded_packages_with_updates }}"
+        vars:
+          excluded_packages_with_updates: >-
+            {{
+            outdated_packages.stdout_lines
+            | map('trim')
+            | select('match', '^[a-zA-Z0-9]')
+            | map('regex_replace', '^([a-zA-Z0-9][a-zA-Z0-9-_]*[a-zA-Z0-9]).*', '\1')
+            | list
+            | intersect(excluded_brew_ids)
+            }}
+        when: 
+          - outdated_packages.stdout_lines is defined 
+          - outdated_packages.stdout_lines | length > 0
+          - excluded_packages_with_updates | length > 0
+
+      - name: Upgrade allowed packages
+        community.general.homebrew:
+          name: "{{ item }}"
+          state: latest
+        loop: "{{ packages_to_upgrade | default([]) }}"
+        when: packages_to_upgrade is defined and packages_to_upgrade | length > 0
 
     - name: Upgrade AppStore apps
       tags: mas_upgrade
@@ -112,7 +159,9 @@
             - excluded_apps_with_updates | length > 0
 
         - name: Upgrade allowed apps
-          command: "mas upgrade {{ item }}"
+          community.general.mas:
+            id: "{{ item }}"
+            state: latest
           loop: "{{ apps_to_upgrade | default([]) }}"
           register: upgrade_results
           when: apps_to_upgrade is defined and apps_to_upgrade | length > 0
