@@ -20,7 +20,9 @@
       # sshpass
       - { name: esolitos/ipa, url: 'https://github.com/esolitos/homebrew-ipa' }
       # vagrant/terraform
-      - { name: hashicorp/tap, url: 'https://github.com/hashicorp/homebrew-tap' }
+      - { name: hashicorp/tap, url: 'https://github.com/hashicorp4/homebrew-tap' }
+      # betteraudio
+      - { name: rokartur/betteraudio, url: 'https://github.com/rokartur/homebrew-betteraudio' }
 
     homebrew_installed_packages:
       - ansible-lint
@@ -45,6 +47,7 @@
       - openshift-cli
       - kubernetes-cli
       - terragrunt
+      - fx
 
     homebrew_cask_apps:
       - firefox
@@ -71,9 +74,9 @@
       # - blueharvest # Installed via AppStore (old purchase)
       - finicky
       # - tunnelblick
-      # - epic pen
+      # - epic pen (installed via web)
       - jordanbaird-ice
-      - macupdater
+      # - macupdater (eol support)
       - audio-hijack
       - loopback
       # - vnc-viewer
@@ -87,12 +90,15 @@
       - openvpn-connect
       - microsoft-edge
       - gcloud-cli
-      - cursor
-      - mysqlworkbench
+      # - cursor
+      # - mysqlworkbench
       - antigravity
       - rustdesk
       - grandperspective
       - lm-studio
+      - betteraudio
+      - betterdisplay
+      - mediahuman-audio-converter
 
     dockitems_remove:
       - Launchpad

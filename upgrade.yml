@@ -8,6 +8,7 @@
       - "823766827" # OneDrive
       - "908570259" # RMS_sharing
       - "540348655" # Monosnap
+      - "497799835" # Xcode
     excluded_brew_ids:
       - "hashicorp-vagrant" # doesn't recognize sudo password when running uninstall.tool
       - "vagrant"
