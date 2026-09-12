@@ -48,6 +48,8 @@
       - kubernetes-cli
       - terragrunt
       - fx
+      - ripgrep # needed for todotree
+      - rclone
 
     homebrew_cask_apps:
       - firefox
